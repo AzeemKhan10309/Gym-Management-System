@@ -14,9 +14,22 @@ const Login = () => {
         withCredentials: true,
       });
       console.log(response.data);
+      const user = response.data.user; 
       localStorage.setItem('token', response.data.token);
-      localStorage.setItem('admin', JSON.stringify(response.data.admin));
-       navigate('/dashboard');
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+       switch (user.role) {
+        case 'admin':
+          navigate('/dashboard');
+          break;
+        case 'trainer':
+          navigate('/trainer/dashboard');
+          break;
+        case 'user':
+          navigate('/user/dashboard');
+          break;
+        default:
+          alert("Unknown role");
+      }
 
     } catch (error) {
       console.error('Login failed:', error);
